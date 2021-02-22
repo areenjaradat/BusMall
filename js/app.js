@@ -155,8 +155,6 @@ function Clicking(event) {
 
   // fix the error here the error was that i call wrong id for the images
 
-  // console.log(attampt);
-
   if (attampt <= maxClicks) {
     if (event.target.id === "image1") {
       arrayOfObjests[firstImage].vote++;
@@ -238,4 +236,4 @@ function createChart() {
     options: {},
   });
 
-}
+}}
