@@ -18,7 +18,7 @@ let arrayOfRanndom = [];
 
 let arrayOfVotes = [];
 let arrayOfImageDisplayed = [];
-let arrayOfNames = [];
+
 
 let arrayOFSrcImages = [
   "bag.jpg",
@@ -139,10 +139,11 @@ function Clicking(event) {
   let paraEl;
   attampt++;
   // console.log(attampt);
+  // fix error for id of image here 
   if (attampt <= maxClicks) {
-    if (event.target.id === "firstImage") {
+    if (event.target.id === "image1") {
       arrayOfObjests[firstImage].vote++;
-    } else if (event.target.id === "seconedImage") {
+    } else if (event.target.id === "image2") {
       arrayOfObjests[seconedImage].vote++;
     } else {
       arrayOfObjests[thirdImage].vote++;
@@ -177,14 +178,12 @@ function createChart() {
   for (let i = 0; i < arrayOfObjests.length; i++) {
     arrayOfVotes.push(arrayOfObjests[i].vote);
     arrayOfImageDisplayed.push(arrayOfObjests[i].timeShown);
-    arrayOfNames.push(arrayOfObjests[i].nameProduct);
+  
   }
 
   var ctx = document.getElementById("Chart").getContext("2d");
   var chart = new Chart(ctx, {
     type: "bar",
-
-    // The data for our dataset
     data: {
       labels: arrayOFNameImages,
       datasets: [
@@ -203,7 +202,6 @@ function createChart() {
       ],
     },
 
-    // Configuration options go here
     options: {},
   });
 }
