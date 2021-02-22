@@ -1,3 +1,4 @@
+
 `use strict`;
 
 let maxClicks = 25;
@@ -18,7 +19,7 @@ let arrayOfRanndom = [];
 
 let arrayOfVotes = [];
 let arrayOfImageDisplayed = [];
-let arrayOfNames = [];
+
 
 let arrayOFSrcImages = [
   "bag.jpg",
@@ -113,30 +114,18 @@ function chooseThreeRandomImages() {
 
   image1.setAttribute("src", arrayOfObjests[firstImage].src);
   containerImg.appendChild(image1);
-
-arrayOfObjests[firstImage].timeShown++;
-
-
- 
- 
-
+  arrayOfObjests[firstImage].timeShown++;
+  containerImg.appendChild(image2);
   image2.setAttribute("src", arrayOfObjests[seconedImage].src);
-   containerImg.appendChild(image2);
   arrayOfObjests[seconedImage].timeShown++;
-
-
+  containerImg.appendChild(image3);
   image3.setAttribute("src", arrayOfObjests[thirdImage].src);
-    containerImg.appendChild(image3);
   arrayOfObjests[thirdImage].timeShown++;
-
-
-  //console.log(firstImage+" "+seconedImage+"  "+thirdImage);
 
   arrayOfRanndom[0]=(firstImage);
   arrayOfRanndom[1]=(seconedImage);
   arrayOfRanndom[2]=(thirdImage);
   console.log(image1,image2,image3)
-
 }
 
 createObjects();
@@ -150,13 +139,8 @@ image3.addEventListener("click", Clicking);
 function Clicking(event) {
   let paraEl;
   attampt++;
-
-  //console.log(attampt);
-
-  // fix the error here the error was that i call wrong id for the images
-
   // console.log(attampt);
-
+  // fix error for id of image here 
   if (attampt <= maxClicks) {
     if (event.target.id === "image1") {
       arrayOfObjests[firstImage].vote++;
@@ -178,19 +162,6 @@ function Clicking(event) {
 
 ButtonResult.addEventListener("click", clickButton);
 
-
-function clickButton(event){
-    let ulEl=document.createElement('ul');
-    mainId.appendChild(ulEl);
-    let liEl;
-    for(let i=0;i<arrayOfObjests.length;i++){
-        liEl=document.createElement('li');
-        ulEl.appendChild(liEl);
-        liEl.textContent=`${arrayOfObjests[i].nameProduct} had ${arrayOfObjests[i].vote} votes and was seen ${arrayOfObjests[i].timeShown} times`
-    }
-    ButtonResult.removeEventListener("click",clickButton);
-    console.log(arrayOfObjests);
-
 function clickButton(event) {
   let ulEl = document.createElement("ul");
   mainId.appendChild(ulEl);
@@ -208,14 +179,12 @@ function createChart() {
   for (let i = 0; i < arrayOfObjests.length; i++) {
     arrayOfVotes.push(arrayOfObjests[i].vote);
     arrayOfImageDisplayed.push(arrayOfObjests[i].timeShown);
-    arrayOfNames.push(arrayOfObjests[i].nameProduct);
+  
   }
 
   var ctx = document.getElementById("Chart").getContext("2d");
   var chart = new Chart(ctx, {
     type: "bar",
-
-    // The data for our dataset
     data: {
       labels: arrayOFNameImages,
       datasets: [
@@ -234,8 +203,6 @@ function createChart() {
       ],
     },
 
- 
     options: {},
   });
-
 }
