@@ -104,12 +104,15 @@ function chooseThreeRandomImages() {
   image1.setAttribute("src", arrayOfObjests[firstImage].src);
   containerImg.appendChild(image1);
 arrayOfObjests[firstImage].timeShown++;
+
 containerImg.appendChild(image2);
   image2.setAttribute("src", arrayOfObjests[seconedImage].src);
   arrayOfObjests[seconedImage].timeShown++;
+
   containerImg.appendChild(image3);
   image3.setAttribute("src", arrayOfObjests[thirdImage].src);
   arrayOfObjests[thirdImage].timeShown++;
+
   //console.log(firstImage+" "+seconedImage+"  "+thirdImage);
 }
 
@@ -125,11 +128,13 @@ image3.addEventListener("click", Clicking);
 function Clicking(event) {
     let paraEl;
   attampt++;
-  console.log(attampt);
+  //console.log(attampt);
+
+  // fix the error here the error was that i call wrong id for the images
   if (attampt <= maxClicks) {
-    if (event.target.id === "firstImage") {
+    if (event.target.id === "image1") {
       arrayOfObjests[firstImage].vote++;
-    } else if (event.target.id === "seconedImage") {
+    } else if (event.target.id === "image2") {
       arrayOfObjests[seconedImage].vote++;
     } else {
       arrayOfObjests[thirdImage].vote++;
@@ -158,4 +163,5 @@ function clickButton(event){
         liEl.textContent=`${arrayOfObjests[i].nameProduct} had ${arrayOfObjests[i].vote} votes and was seen ${arrayOfObjests[i].timeShown} times`
     }
     ButtonResult.removeEventListener("click",clickButton);
+    console.log(arrayOfObjests);
 }
