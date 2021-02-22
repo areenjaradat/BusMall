@@ -1,7 +1,7 @@
 `use strict`;
 
 let maxClicks = 25;
-let attampt = 0;
+let attampt = 1;
 
 let arrayOfObjests = [];
 
@@ -9,11 +9,16 @@ let firstImage;
 let seconedImage;
 let thirdImage;
 let mainId = document.getElementById("container");
-let ButtonResult=document.getElementById('ButtonResult');
-let containerImg=document.getElementById('containerImg');
+let ButtonResult = document.getElementById("ButtonResult");
+let containerImg = document.getElementById("containerImg");
 let image1 = document.getElementById("image1");
 let image2 = document.getElementById("image2");
 let image3 = document.getElementById("image3");
+let arrayOfRanndom = [];
+
+let arrayOfVotes = [];
+let arrayOfImageDisplayed = [];
+let arrayOfNames = [];
 
 let arrayOFSrcImages = [
   "bag.jpg",
@@ -65,6 +70,7 @@ function Busmall(nameProduct, src) {
   this.src = "/img/" + src;
   this.timeShown = 0;
   this.vote = 0;
+
   // console.log(this);
   arrayOfObjests.push(this);
 }
@@ -78,9 +84,14 @@ function createObjects() {
 
 function generateRandomIndex() {
   let randomIndex = Math.floor(Math.random() * arrayOfObjests.length);
+
+  while ( arrayOfRanndom.includes(randomIndex) ) {
+    randomIndex = Math.floor(Math.random() * arrayOfObjests.length);
+    console.log("hi")
+  }
+
   return randomIndex;
 }
-
 
 function chooseThreeRandomImages() {
   firstImage = generateRandomIndex();
@@ -98,22 +109,34 @@ function chooseThreeRandomImages() {
     } else {
       bool = false;
     }
-
   }
 
   image1.setAttribute("src", arrayOfObjests[firstImage].src);
   containerImg.appendChild(image1);
+
 arrayOfObjests[firstImage].timeShown++;
 
-containerImg.appendChild(image2);
+
+ 
+ 
+
   image2.setAttribute("src", arrayOfObjests[seconedImage].src);
+   containerImg.appendChild(image2);
   arrayOfObjests[seconedImage].timeShown++;
 
-  containerImg.appendChild(image3);
+
   image3.setAttribute("src", arrayOfObjests[thirdImage].src);
+    containerImg.appendChild(image3);
   arrayOfObjests[thirdImage].timeShown++;
 
+
   //console.log(firstImage+" "+seconedImage+"  "+thirdImage);
+
+  arrayOfRanndom[0]=(firstImage);
+  arrayOfRanndom[1]=(seconedImage);
+  arrayOfRanndom[2]=(thirdImage);
+  console.log(image1,image2,image3)
+
 }
 
 createObjects();
@@ -121,16 +144,19 @@ chooseThreeRandomImages();
 
 //console.log(arrayOfObjests);
 
-
 image1.addEventListener("click", Clicking);
 image2.addEventListener("click", Clicking);
 image3.addEventListener("click", Clicking);
 function Clicking(event) {
-    let paraEl;
+  let paraEl;
   attampt++;
+
   //console.log(attampt);
 
   // fix the error here the error was that i call wrong id for the images
+
+  // console.log(attampt);
+
   if (attampt <= maxClicks) {
     if (event.target.id === "image1") {
       arrayOfObjests[firstImage].vote++;
@@ -139,7 +165,6 @@ function Clicking(event) {
     } else {
       arrayOfObjests[thirdImage].vote++;
     }
-    
   } else {
     image1.removeEventListener("click", Clicking);
     image2.removeEventListener("click", Clicking);
@@ -148,10 +173,11 @@ function Clicking(event) {
 
   chooseThreeRandomImages();
 
-//  console.log(arrayOfObjests);
+  //  console.log(arrayOfObjests);
 }
 
-ButtonResult.addEventListener("click",clickButton);
+ButtonResult.addEventListener("click", clickButton);
+
 
 function clickButton(event){
     let ulEl=document.createElement('ul');
@@ -164,4 +190,52 @@ function clickButton(event){
     }
     ButtonResult.removeEventListener("click",clickButton);
     console.log(arrayOfObjests);
+
+function clickButton(event) {
+  let ulEl = document.createElement("ul");
+  mainId.appendChild(ulEl);
+  let liEl;
+  for (let i = 0; i < arrayOfObjests.length; i++) {
+    liEl = document.createElement("li");
+    ulEl.appendChild(liEl);
+    liEl.textContent = `${arrayOfObjests[i].nameProduct} had ${arrayOfObjests[i].vote} votes and was seen ${arrayOfObjests[i].timeShown} times`;
+  }
+  createChart();
+  ButtonResult.removeEventListener("click", clickButton);
+}
+
+function createChart() {
+  for (let i = 0; i < arrayOfObjests.length; i++) {
+    arrayOfVotes.push(arrayOfObjests[i].vote);
+    arrayOfImageDisplayed.push(arrayOfObjests[i].timeShown);
+    arrayOfNames.push(arrayOfObjests[i].nameProduct);
+  }
+
+  var ctx = document.getElementById("Chart").getContext("2d");
+  var chart = new Chart(ctx, {
+    type: "bar",
+
+    // The data for our dataset
+    data: {
+      labels: arrayOFNameImages,
+      datasets: [
+        {
+          label: "Buses Vote",
+          backgroundColor: "#F3E5AB",
+          borderColor: "rgb(255, 99, 132)",
+          data: arrayOfVotes,
+        },
+        {
+          label: "Image  Displayed",
+          backgroundColor: "#F2BB66",
+          borderColor: "rgb(155,100,30)",
+          data: arrayOfImageDisplayed,
+        },
+      ],
+    },
+
+ 
+    options: {},
+  });
+
 }
