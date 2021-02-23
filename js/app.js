@@ -1,4 +1,3 @@
-
 `use strict`;
 
 let maxClicks = 25;
@@ -19,7 +18,6 @@ let arrayOfRanndom = [];
 
 let arrayOfVotes = [];
 let arrayOfImageDisplayed = [];
-
 
 let arrayOFSrcImages = [
   "bag.jpg",
@@ -86,9 +84,9 @@ function createObjects() {
 function generateRandomIndex() {
   let randomIndex = Math.floor(Math.random() * arrayOfObjests.length);
 
-  while ( arrayOfRanndom.includes(randomIndex) ) {
+  while (arrayOfRanndom.includes(randomIndex)) {
     randomIndex = Math.floor(Math.random() * arrayOfObjests.length);
-    console.log("hi")
+    //console.log("hi")
   }
 
   return randomIndex;
@@ -122,10 +120,10 @@ function chooseThreeRandomImages() {
   image3.setAttribute("src", arrayOfObjests[thirdImage].src);
   arrayOfObjests[thirdImage].timeShown++;
 
-  arrayOfRanndom[0]=(firstImage);
-  arrayOfRanndom[1]=(seconedImage);
-  arrayOfRanndom[2]=(thirdImage);
-  console.log(image1,image2,image3)
+  arrayOfRanndom[0] = firstImage;
+  arrayOfRanndom[1] = seconedImage;
+  arrayOfRanndom[2] = thirdImage;
+  //console.log(image1,image2,image3)
 }
 
 createObjects();
@@ -139,8 +137,10 @@ image3.addEventListener("click", Clicking);
 function Clicking(event) {
   let paraEl;
   attampt++;
+
   // console.log(attampt);
-  // fix error for id of image here 
+  // fix error for id of image here
+
   if (attampt <= maxClicks) {
     if (event.target.id === "image1") {
       arrayOfObjests[firstImage].vote++;
@@ -153,33 +153,41 @@ function Clicking(event) {
     image1.removeEventListener("click", Clicking);
     image2.removeEventListener("click", Clicking);
     image3.removeEventListener("click", Clicking);
+    savedVotes();
   }
 
   chooseThreeRandomImages();
-
+ 
   //  console.log(arrayOfObjests);
 }
 
 ButtonResult.addEventListener("click", clickButton);
 
 function clickButton(event) {
+  
+  /*createElement();*/
+  createChart();
+  ButtonResult.removeEventListener("click", clickButton);
+ // savedVotes();
+  
+}
+ 
+function createElement() {
   let ulEl = document.createElement("ul");
   mainId.appendChild(ulEl);
   let liEl;
   for (let i = 0; i < arrayOfObjests.length; i++) {
     liEl = document.createElement("li");
     ulEl.appendChild(liEl);
-    liEl.textContent = `${arrayOfObjests[i].nameProduct} had ${arrayOfObjests[i].vote} votes and was seen ${arrayOfObjests[i].timeShown} times`;
+  //liEl.textContent = `${arrayOfObjests[i].nameProduct} had ${arrayOfObjests[i].vote} votes and was seen ${arrayOfObjests[i].timeShown} times`;
+    liEl.textContent = `${arrayOfObjests[i].nameProduct} had ${arrayOfObjests[i].vote} votes`;
   }
-  createChart();
-  ButtonResult.removeEventListener("click", clickButton);
 }
 
 function createChart() {
   for (let i = 0; i < arrayOfObjests.length; i++) {
     arrayOfVotes.push(arrayOfObjests[i].vote);
     arrayOfImageDisplayed.push(arrayOfObjests[i].timeShown);
-  
   }
 
   var ctx = document.getElementById("Chart").getContext("2d");
@@ -206,3 +214,26 @@ function createChart() {
     options: {},
   });
 }
+
+function savedVotes() {
+  
+  let busesMall = JSON.stringify(arrayOfObjests);
+  localStorage.setItem("busesmall", busesMall);
+  console.log(arrayOfObjests)
+}
+
+function gettingBusMall() {
+  let getBusMall = localStorage.getItem("busesmall");
+  let contents = JSON.parse(getBusMall);
+  console.log(contents);
+
+  if (contents) {
+    arrayOfObjests = contents;
+  }
+  let para = document.createElement("p");
+  mainId.appendChild(para);
+  para.textContent = "last voting result";
+  createElement();
+}
+
+gettingBusMall();
